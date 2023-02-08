@@ -1,0 +1,29 @@
+\chapter{Conclusions}
+\addcontentsline{toc}{chapter}{Conclusions}
+\label{chap:conclusion}
+
+% -------------------------------------------------------------------
+% Contributions
+% -------------------------------------------------------------------
+\section*{Contributions}
+In this article, we proposed multiple approaches for the sentiment polarity detection - a sub-task of ABSA problem. Experiments indicated significant result as WWL combine with classic models has reach the maximum percentage of 95\% in Micro- and Macro-Average Performance of F1-score.
+
+% -------------------------------------------------------------------
+% Results
+% -------------------------------------------------------------------
+Through experiments using the locating method and apply multiple data representation techniques, we can determine that using the WWL method with the Chi-Squared data representation brings very prominent results when combined with traditional machine learning methods. Because when classify the sentiment for multi-label data (i.e., multiple aspects in a data sample) using multiple models, we need to find the words associated with the label and the word representing its sentiment. WWL technique step solves this problem. In addition, in order for the data to focus on important words, we use Chi-Squared score to weight word level in the vocab and use it to represent data. This combination brings the most outstanding advantage to address the problem.
+
+% -------------------------------------------------------------------
+% Limitations and Future Work
+% -------------------------------------------------------------------
+\section*{Limitations and Future Work}
+Selecting threshold for locating words inappropriately may be harmful to the result of the model. Window size (i.e., the number of words around from the center, which equals 3 in the proposed work) affects final result too. This requires manual data revision to be done carefully to choose which one is the best. This is the limitation of our method.
+
+The weak point of proposed work indicates our next path to have in-depth research in the future: 
+
+(i) More data should be collected to enlarge the dataset.
+
+(ii) Handling the data imbalance problem.
+
+(iii) Developing WWL in order to overcome current disadvantage.
+% We released our source code and data on the public repository to support the re-producibility of our work and facilitate other related studies.
