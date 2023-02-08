@@ -1,0 +1,51 @@
+\chapter{Mô hình Graph Attention Network}
+\label{chap:gat-architecture}
+
+
+
+
+
+
+% -------------------------------------------------------------------
+% Motivation
+% -------------------------------------------------------------------
+\section{Motivation}
+
+In recent years, an increasing number of sentiment data or reviews are produced together with the explosion of product discussion on the Internet, especially on E-commerce platforms. Not only play a significant role in consumer's purchase-decision process, these reviews also important to businesses as they could monitor brand and product sentiment in customer feedback as well as understand customer needs. However, tremendous amount of data make manual approach time-consuming and costly and therefore impractical, which truly create space for automated methods.
+
+Sentiment Analysis (SA) is a natural language process technique with a view to extract the sentimental status of opinions as positive, negative or neutral. This topic has been studied very early in the world in general (Turney, 2002 \cite{turney2002thumbs}) and Vietnam in particular (Kieu and Pham, 2010 \cite{kieu2010sentiment}). However, the main problem in SA is to determine sentence-level sentiment, which is inadequate for further analysis needed. For example, in the Vietnamese sentence \foreignlanguage{vietnamese}{\emph{"Bỉm mềm, chất lượng tốt, hút được nhiều nhưng giao hàng khá chậm"} ("Soft, good quality diapers, absorb a lot but delivery is quite slow") the mentioned aspects are \emph{"chất lượng"} or quality and \emph{"giao hàng"} or delivery}. Each opinion can refer to more than one aspect, as well as specific aspect is usually implied rather than general or entity one (which can be solved by using normal SA solutions). To address this problem, we need deeper analysis in terms of aspect-level sentiment called aspect-based sentiment analysis.
+
+% -------------------------------------------------------------------
+% Problem statement
+% -------------------------------------------------------------------
+
+\section{Problem Definition}
+
+Aspect-Based Sentiment Analysis (ABSA) is a sub-field of sentiment analysis, which allows us to deeply understand and determine sentiment in terms of different aspects of the topic (Thin et al., 2018 \cite{van2018transformation}). An ABSA system receives textual data (e.g., reviews or comments on shopping platforms) about specific entity (e.g., baby care products like diapers). The system must be able to detect the mainly discussed aspects of the entity (e.g., ``\texttt{quality}'', ``\texttt{delivery}''), together with the sentiment of each aspects, or how positive/negative the opinions are. So basically the ABSA problem can be divided to two sub-task: aspect detection and sentiment polarity detection. The first sub-task attempts to determine all aspects from opinion, meanwhile the second sub-task aims to decide which sentiment polarity each aspect is. Considering above example "Soft, thin, good quality diapers, absorb a lot but delivery is quite slow", the system must be able to determine all the aspect-sentiment tuple: \{\texttt{quality}, \texttt{positive}\} and \{\texttt{delivery}, \texttt{negative}\}.
+
+% -------------------------------------------------------------------
+% Difficulties and Challenges
+% -------------------------------------------------------------------
+
+
+% -------------------------------------------------------------------
+% Common Approaches
+% -------------------------------------------------------------------
+
+\section{Related Works}
+Due to broad applications in giving necessary details on different aspects of the sentence or document, ABSA has been extensively researched in various languages. ABSA was first researched and introduced by (Hu and Liu, 2004 \cite{hu2004mining}) in which they only aim to determine product features/aspects that the reviewers have commented on. In the past few years, neural network-based systems have became trending adaptation for ABSA problem as these methods can be trained end-to-end and automatically learn important features (Jiang et al., 2019 \cite{jiang2019challenge}). (Wei and Tao, 2018 \cite{xue2018aspect}) developed Gated Convolutional Network, a model based on convolutional neural networks and gating mechanisms. (Yukun et al., 2018 \cite{ma2018sentic}) proposed Sentic LSTM, an extension of long-short term memory (LSTM) network. (Nguyen and Shirai, 2015 \cite{nguyen2015phrasernn}) introduced recursive neural network approach to make the representation of the target aspect richer by using syntactic information.
+In Vietnamese, various methods were proposed in the recent years to address ABSA problem with Vietnamese textual data such as BRNN-CRF architecture (Mai and Le, 2018 \cite{mai2018aspect}), SVM-based model (Thin et al., 2018 \cite{van2018transformation}), Semantic Relation Analysis (Tran and Phan, 2018 \cite{tran2018towards}), semi-supervised learning (Nguyen-Nhat et al., 2019 \cite{nguyen2019one}), etc. 
+
+
+
+% -------------------------------------------------------------------
+% Contributions and Structure of the Thesis
+% -------------------------------------------------------------------
+\section{Contributions and Structure of the Report}
+The main contribution of this work are:
+
+(i) We build a data set for training and testing the sentiment classification model. Implementation steps include surveying, collecting, normalizing, annotating, calibrating, and analyzing data.
+
+(ii) We propose a multi-label classification model for the second sub-task of ABSA. Word window is used to extract information of specific aspects and various data representation methods to extract features for classifiers. Afterwards, we apply classic models concurrently with Deep Learning adaptation to find out best approach for our situation.
+
+The remainders of the paper is organized as follows. Chapter~\ref{chap:dataset-construction} describes the process of dataset construction: collection, annotation and analysis. The research directions of the ABSA problem relevant to dedicated domain (Technology and Mother \& Baby in detail) is represented in chapter~\ref{chap:model}. Chapter~\ref{chap:experiments} describes the experiments that we illustrates the statistics of all methods considered in each of our model's components and finally, chapter~\ref{chap:conclusion} concludes the topic with our future works.
