@@ -2,24 +2,32 @@
 \label{chap:gat-architecture}
 
 
-
+Trong phần này, chúng tôi sẽ trình bày các kiến thức nền tảng được sử dụng để xây dựng các mạng quan sát đồ thị tùy chọn (bằng cách gắp lớp này) và liệt kê các hiệu quả về mặt lý thuyết và thực tế cùng các hạn chế so với công trình liên quan đến lĩnh vực xử lý đồ thị nơ-ron trước đây.
 
 
 
 % -------------------------------------------------------------------
-% Motivation
-% -------------------------------------------------------------------
-\section{Motivation}
-
-In recent years, an increasing number of sentiment data or reviews are produced together with the explosion of product discussion on the Internet, especially on E-commerce platforms. Not only play a significant role in consumer's purchase-decision process, these reviews also important to businesses as they could monitor brand and product sentiment in customer feedback as well as understand customer needs. However, tremendous amount of data make manual approach time-consuming and costly and therefore impractical, which truly create space for automated methods.
-
-Sentiment Analysis (SA) is a natural language process technique with a view to extract the sentimental status of opinions as positive, negative or neutral. This topic has been studied very early in the world in general (Turney, 2002 \cite{turney2002thumbs}) and Vietnam in particular (Kieu and Pham, 2010 \cite{kieu2010sentiment}). However, the main problem in SA is to determine sentence-level sentiment, which is inadequate for further analysis needed. For example, in the Vietnamese sentence \foreignlanguage{vietnamese}{\emph{"Bỉm mềm, chất lượng tốt, hút được nhiều nhưng giao hàng khá chậm"} ("Soft, good quality diapers, absorb a lot but delivery is quite slow") the mentioned aspects are \emph{"chất lượng"} or quality and \emph{"giao hàng"} or delivery}. Each opinion can refer to more than one aspect, as well as specific aspect is usually implied rather than general or entity one (which can be solved by using normal SA solutions). To address this problem, we need deeper analysis in terms of aspect-level sentiment called aspect-based sentiment analysis.
-
-% -------------------------------------------------------------------
-% Problem statement
+% Đồ Thị Phân Lớp Tập Trung (Graph Attentional Layer)
 % -------------------------------------------------------------------
 
-\section{Problem Definition}
+\section{Đồ Thị Phân Lớp Tập Trung (Graph Attentional Layer)}
+Chúng ta bắt đầu bằng viết một phân lớp đồ thị tập trung đơn lẻ, đây là lớp duy nhất được sử dụng trong toàn bộ các mô hình GAT trong các thử nghiệm của chúng tôi. Thiết kế chú ý cụ thể được chúng tôi sử dụng gần gũi với công trình của Bahdanau et al. (2015) - nhưng khung làm việc là agnostic với lựa chọn cụ thể của mức độ chú ý.
+
+Đầu vào của lớp của chúng tôi là một tập hợp các đặc điểm nút, trong đó N là số lượng nút và F là số lượng đặc điểm trong mỗi nút. Lớp tạo ra một tập hợp các đặc điểm nút mới (có thể khác với số lượng F), như đầu ra của nó.
+
+Để có đủ năng lượng biểu diễn để chuyển đổi đặc trưng đầu vào thành đặc trưng cấp cao hơn, ít nhất một biến đổi tuyến tính có thể học là cần thiết. Để đạt được mục đích đó, làm một bước đầu tiên, một biến đổi tuyến tính chung, được tham số hóa bởi ma trận trọng số  ..., được áp dụng cho mỗi nút. Chúng ta sau đó thực hiện tự quan tâm trên các nút - một mục đích quan tâm chung …. tính hệ số chú ý
+….
+cho thấy sự quan trọng của đặc trưng của nút j đối với nút i. Trong biểu diễn tổng quát nhất, mô hình cho phép mỗi nút chú ý tới mọi nút khác, loại bỏ tất cả thông tin cấu trúc. Chúng ta tiếp cận cấu trúc đồ thị qua việc thực hiện sự chú ý được che đậy - chúng ta chỉ tính toán sự chú ý được che đậy -Chỉ tính eij cho các nút j  Ni, trong đó Ni là một khu vực xung quanh nút i trong đồ thị. Trong tất cả các thí nghiệm của chúng tôi, đó sẽ chính là các nút đồng bậc đầu tiên của i (bao gồm i). Để dễ dàng so sánh các hệ số giữa các nút khác nhau, chúng tôi chuẩn hóa chúng theo tất cả các lựa chọn của j bằng hàm softmax:
+
+…..
+Trong các thí nghiệm của chúng tôi, cơ chế chú ý a là một mạng nơ-ron feedforward đơn tầng, được tham số hóa bởi một vectơ trọng số... và áp dụng phi tuyến LeakyReLU (với đầu vào dối mạng âm  0,2). Đủ mở rộng ra, các hệ số được tính bởi cơ chế chú ý (minh họa bởi Hình 1 (trái)) có thể được biểu diễn như sau:
+
+
+% -------------------------------------------------------------------
+% So sánh với các nghiên cứu trước
+% -------------------------------------------------------------------
+
+\section{So sánh với các nghiên cứu trước}
 
 Aspect-Based Sentiment Analysis (ABSA) is a sub-field of sentiment analysis, which allows us to deeply understand and determine sentiment in terms of different aspects of the topic (Thin et al., 2018 \cite{van2018transformation}). An ABSA system receives textual data (e.g., reviews or comments on shopping platforms) about specific entity (e.g., baby care products like diapers). The system must be able to detect the mainly discussed aspects of the entity (e.g., ``\texttt{quality}'', ``\texttt{delivery}''), together with the sentiment of each aspects, or how positive/negative the opinions are. So basically the ABSA problem can be divided to two sub-task: aspect detection and sentiment polarity detection. The first sub-task attempts to determine all aspects from opinion, meanwhile the second sub-task aims to decide which sentiment polarity each aspect is. Considering above example "Soft, thin, good quality diapers, absorb a lot but delivery is quite slow", the system must be able to determine all the aspect-sentiment tuple: \{\texttt{quality}, \texttt{positive}\} and \{\texttt{delivery}, \texttt{negative}\}.
 
