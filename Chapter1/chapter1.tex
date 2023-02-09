@@ -1,46 +1,124 @@
-\chapter{Introduction}
-\label{chap:introduction}
-
-% -------------------------------------------------------------------
-% Motivation
-% -------------------------------------------------------------------
-\section{Motivation}
-
-In recent years, an increasing number of sentiment data or reviews are produced together with the explosion of product discussion on the Internet, especially on E-commerce platforms. Not only play a significant role in consumer's purchase-decision process, these reviews also important to businesses as they could monitor brand and product sentiment in customer feedback as well as understand customer needs. However, tremendous amount of data make manual approach time-consuming and costly and therefore impractical, which truly create space for automated methods.
-
-Sentiment Analysis (SA) is a natural language process technique with a view to extract the sentimental status of opinions as positive, negative or neutral. This topic has been studied very early in the world in general (Turney, 2002 \cite{turney2002thumbs}) and Vietnam in particular (Kieu and Pham, 2010 \cite{kieu2010sentiment}). However, the main problem in SA is to determine sentence-level sentiment, which is inadequate for further analysis needed. For example, in the Vietnamese sentence \foreignlanguage{vietnamese}{\emph{"Bỉm mềm, chất lượng tốt, hút được nhiều nhưng giao hàng khá chậm"} ("Soft, good quality diapers, absorb a lot but delivery is quite slow") the mentioned aspects are \emph{"chất lượng"} or quality and \emph{"giao hàng"} or delivery}. Each opinion can refer to more than one aspect, as well as specific aspect is usually implied rather than general or entity one (which can be solved by using normal SA solutions). To address this problem, we need deeper analysis in terms of aspect-level sentiment called aspect-based sentiment analysis.
-
-% -------------------------------------------------------------------
-% Problem statement
-% -------------------------------------------------------------------
-
-\section{Problem Definition}
-
-Aspect-Based Sentiment Analysis (ABSA) is a sub-field of sentiment analysis, which allows us to deeply understand and determine sentiment in terms of different aspects of the topic (Thin et al., 2018 \cite{van2018transformation}). An ABSA system receives textual data (e.g., reviews or comments on shopping platforms) about specific entity (e.g., baby care products like diapers). The system must be able to detect the mainly discussed aspects of the entity (e.g., ``\texttt{quality}'', ``\texttt{delivery}''), together with the sentiment of each aspects, or how positive/negative the opinions are. So basically the ABSA problem can be divided to two sub-task: aspect detection and sentiment polarity detection. The first sub-task attempts to determine all aspects from opinion, meanwhile the second sub-task aims to decide which sentiment polarity each aspect is. Considering above example "Soft, thin, good quality diapers, absorb a lot but delivery is quite slow", the system must be able to determine all the aspect-sentiment tuple: \{\texttt{quality}, \texttt{positive}\} and \{\texttt{delivery}, \texttt{negative}\}.
-
-% -------------------------------------------------------------------
-% Difficulties and Challenges
-% -------------------------------------------------------------------
+\chapter{MÔ HÌNH GRAPH ATTENTION NETWORK}
+\label{chap:MÔ HÌNH GRAPH ATTENTION NETWORK}
 
 
 % -------------------------------------------------------------------
-% Common Approaches
+% Data Collection
 % -------------------------------------------------------------------
+Trong phần này, chúng tôi sẽ trình bày các kiến thức nền tảng được sử dụng để xây dựng các mạng quan sát đồ thị tùy chọn (bằng cách gắp lớp này) và liệt kê các hiệu quả về mặt lý thuyết và thực tế cùng các hạn chế so với công trình liên quan đến lĩnh vực xử lý đồ thị nơ-ron trước đây."
 
-\section{Related Works}
-Due to broad applications in giving necessary details on different aspects of the sentence or document, ABSA has been extensively researched in various languages. ABSA was first researched and introduced by (Hu and Liu, 2004 \cite{hu2004mining}) in which they only aim to determine product features/aspects that the reviewers have commented on. In the past few years, neural network-based systems have became trending adaptation for ABSA problem as these methods can be trained end-to-end and automatically learn important features (Jiang et al., 2019 \cite{jiang2019challenge}). (Wei and Tao, 2018 \cite{xue2018aspect}) developed Gated Convolutional Network, a model based on convolutional neural networks and gating mechanisms. (Yukun et al., 2018 \cite{ma2018sentic}) proposed Sentic LSTM, an extension of long-short term memory (LSTM) network. (Nguyen and Shirai, 2015 \cite{nguyen2015phrasernn}) introduced recursive neural network approach to make the representation of the target aspect richer by using syntactic information.
-In Vietnamese, various methods were proposed in the recent years to address ABSA problem with Vietnamese textual data such as BRNN-CRF architecture (Mai and Le, 2018 \cite{mai2018aspect}), SVM-based model (Thin et al., 2018 \cite{van2018transformation}), Semantic Relation Analysis (Tran and Phan, 2018 \cite{tran2018towards}), semi-supervised learning (Nguyen-Nhat et al., 2019 \cite{nguyen2019one}), etc. 
+\section{Đồ Thị Phân Lớp Tập Trung (Graph Attentional Layer)}
+\label{sec:Đồ Thị Phân Lớp Tập Trung (Graph Attentional Layer)}
 
+Chúng ta bắt đầu bằng viết một phân lớp đồ thị tập trung đơn lẻ, đây là lớp duy nhất được sử dụng trong toàn bộ các mô hình GAT trong các thử nghiệm của chúng tôi. Thiết kế chú ý cụ thể được chúng tôi sử dụng gần gũi với công trình của Bahdanau et al. (2015) - nhưng khung làm việc là agnostic với lựa chọn cụ thể của mức độ chú ý.
 
+Đầu vào của lớp của chúng tôi là một tập hợp các đặc điểm nút, 
+\(\textbf{h = } \{\vec{h_1}, \vec{h_2}, .... \vec{h_N} \}\), 
+\(\vec{h_i} \in \mathbb{R}^F\),
+trong đó $N$ là số lượng nút và $F$ là số lượng đặc điểm trong mỗi nút. 
+Lớp tạo ra một tập hợp các đặc điểm nút mới (có thể khác với số lượng $F$), 
+$\textbf{h' = } \{\vec{h'_1}, \vec{h'_2}, .... \vec{h'_N} \}$, $\vec{h'_i} \in \mathbb{R}^F $,
+như đầu ra của nó.
+
+Để có đủ năng lượng biểu diễn để chuyển đổi đặc trưng đầu vào thành đặc trưng cấp cao hơn, ít nhất một biến đổi tuyến tính có thể học là cần thiết. Để đạt được mục đích đó, làm một bước đầu tiên, một biến đổi tuyến tính chung, được tham số hóa bởi \textit{ma trận trọng số}, 
+\(\textbf{W} \in {\mathbb{R}^{F' X F}}\), 
+được áp dụng cho mỗi nút. Chúng ta sau đó thực hiện tự quan tâm trên các nút - một mục đích quan tâm chung a: 
+\(\mathbb{R}^{F'} X \mathbb{R}^{F} \to \mathbb{R}\) 
+tính hệ số chú ý
+\[ e_{ij} = a(\textbf{W}\vec{h_i}, \textbf{W}\vec{h_j}) \]
+cho thấy sự quan trọng của đặc trưng của nút $j$ đối với nút $i$. Trong biểu diễn tổng quát nhất, mô hình cho phép mỗi nút chú ý tới mọi nút khác, \textit{loại bỏ tất cả thông tin cấu trúc}. Chúng ta tiếp cận cấu trúc đồ thị qua việc thực hiện sự chú ý được che đậy - Chỉ tính $eij$ cho các nút $j \in N_i,$ trong đó $N_i$ là một khu vực xung quanh nút $i$ trong đồ thị. Trong tất cả các thí nghiệm của chúng tôi, đó sẽ chính là các nút đồng bậc đầu tiên của $i$ (bao gồm $i$). Để dễ dàng so sánh các hệ số giữa các nút khác nhau, chúng tôi chuẩn hóa chúng theo tất cả các lựa chọn của $j$ bằng hàm softmax:
+
+\[\alpha_{ij} = softmax_j{(e_{ij})} = \frac{ exp(e_{ij} ) }{{\displaystyle \sum}_{k \in N_i}exp(e_{ik})}\]
+
+Trong các thí nghiệm của chúng tôi, cơ chế chú ý a là một mạng nơ-ron feedforward đơn tầng, được tham số hóa bởi một vectơ trọng số 
+\(\vec{\textbf{a}} \in \mathbb{R}_{2F'}\) 
+và áp dụng phi tuyến LeakyReLU (với đầu vào dối mạng âm $ \alpha = 0,2$). Đủ mở rộng ra, các hệ số được tính bởi cơ chế chú ý (minh họa bởi Hình 1 (trái)) có thể được biểu diễn như sau:
+
+\[
+\alpha_{ij} = \frac
+{exp(LeakyReLU(\vec{a}^T[\textbf{W}\vec{h_i}\|\textbf{W}\vec{h_j}]))}
+{{\displaystyle \sum}_{k \in N_i} exp(LeakyReLU(\vec{a}^T[\textbf{W}\vec{h_i}\|\textbf{W}\vec{h_k}]))}
+\]
+
+$.^T$ đại diện cho phép chuyển vị, và $\|$ là thao tác nối tiếp. 
+
+Sau khi được tính toán, các hệ số quan tâm được chuẩn hóa được sử dụng để tính tổng trọng số của các đặc trưng tương ứng với chúng, để dùng làm đặc trưng đầu ra cuối cùng cho mỗi nút (sau có thể là
+
+\begin{figure} [!hp]
+	%\centering
+	\includegraphics[scale = 1]{Chapter1/Figs/Figure1.png}
+	\caption{\textbf{Left}: Cơ chế quan tâm 
+			\(a(\textbf{W}\vec{h}_i\|\textbf{W}\vec{h}_j)\)
+			được sử dụng bởi mô hình của chúng tôi, được tham số hóa bởi một vectơ trọng số 
+			\(\vec{\textbf{a}} \in \mathbb{R}^{2F'}\),
+		   áp dụng một hoạt động LeakyReLU. Bên phải: Một minh hoạ của quan tâm đa đầu (với $K = 3$ đầu) bởi nút 1 trên khu vực xung quanh của nó. Các kiểu mũi tên và màu sắc khác nhau đại diện cho các tính toán quan tâm độc lập. Các đặc trưng được tổng hợp từ mỗi đầu được nối tiếp hoặc trung bình để đạt được $\vec{h'_1}$,}
+	\label{fig:figure1}
+\end{figure}
+Áp dụng một hàm phi tuyến, $\sigma$):
+
+\[\vec{h'_i} = \sigma ({\displaystyle \sum_{j \in N_i}} \alpha_{ij}\textbf{W}\vec{h}_i)\]
+
+Để stabilizr quá trình học tự quan tâm, chúng tôi đã tìm thấy mở rộng cơ chế của chúng tôi để sử dụng quan tâm đa đầu có lợi, tương tự như Vaswani et al. (2017). Cụ thể, K cơ chế quan tâm độc lập thực hiện biến đổi của Phương trình 4, và sau đó các đặc trưng của chúng được nối tiếp, dẫn đến biểu diễn đặc trưng đầu ra sau:
+
+\begin{figure} [!ht]
+	\centering
+	\includegraphics[scale = 0.7]{Chapter1/Figs/ct5.png}
+	%\caption{Data Annotation process}
+	\label{fig:ct1}
+\end{figure}
+
+Trong đó, $\|$ đại diện cho việc nối tiếp, $\alpha_{ij}^k$ là các hệ số quan tâm đã chuẩn hóa được tính bởi cơ chế quan tâm \textit{k}-th ($a^k$), và $\textbf{W}^k$ là ma trận trọng số biến đổi tuyến tính đầu vào tương ứng. Lưu ý rằng, trong tình huống này, kết quả trả về cuối cùng, \textbf{h'}, sẽ bao gồm $KF'$ đặc trưng (thay vì $F'$) cho mỗi nút.
+
+Đặc biệt, nếu chúng ta thực hiện quan tâm đa đầu trên lớp cuối cùng (dự đoán) của mạng, việc nối tiếp không còn hợp lý - thay vào đó, chúng tôi sử dụng trung bình, và hoãn áp dụng nonlinearity cuối cùng (thường là một softmax hoặc sigmoid logistic cho các vấn đề phân loại) cho đến khi đó:
+
+\[
+\vec{h'_i} = \sigma (
+\frac{1}{K}
+{\displaystyle \sum_{k=1}^K}
+{\displaystyle \sum_{j \in N_i}} 
+\alpha_{ij}^k\textbf{W}^k\vec{h}_i)
+\]
+
+Quá trình tập hợp của một lớp quan tâm đồ thị đa đầu được minh họa bởi Hình 1 (bên phải).
 
 % -------------------------------------------------------------------
-% Contributions and Structure of the Thesis
+% Data Annotation
 % -------------------------------------------------------------------
-\section{Contributions and Structure of the Report}
-The main contribution of this work are:
+\section{So sánh với các nghiên cứu trước}
+\label{sec:So sánh với các nghiên cứu trước}
+Lớp quan sát đồ thị mô tả trong phần 2.1 trực tiếp giải quyết một số vấn đề xuất hiện trong các phương pháp trước đó về mô hình hóa dữ liệu cấu trúc đồ thị:
+	\begin{itemize}
+		\item Tính toán, nó rất hiệu quả: hoạt động của lớp tự quan tâm có thể được đồng bộ hóa trên tất cả các cạnh và tính toán của đặc trưng đầu ra có thể được đồng bộ hóa trên tất cả các nút. Không cần phải tính toán các phép biến đổi ma trận giống như tính toán $eigendecompositions$ hoặc các phép toán ma trận tương tự chi phí cao. Độ phức tạp của một đầu quan tâm GAT tính toán đặc trưng $F'$ có thể biểu diễn dưới dạng $O(|V|F F' + |E|F')$, $F$ là số lượng các đặc trưng đầu vào, $|V|$ và $|E|$ là số lượng nút và cạnh trong đồ thị, tương ứng. Độ phức tạp này tương đương với các phương pháp cơ sở như Mạng Convolutional đồ thị (GCN) (Kipf \& Welling, 2017). Áp dụng nhiều đầu chú ý tăng yêu cầu lưu trữ và tham số lên một yếu tố K, trong khi tính toán của các đầu riêng biệt là hoàn toàn độc lập và có thể song song hóa.
+		
+		\item Khác với GCNs, mô hình của chúng tôi cho phép (ẩn định) gán sự quan trọng khác nhau cho các nút trong một khu vực giống nhau, cho phép mô hình có khả năng lớn hơn. Ngoài ra, phân tích trọng số chú ý đã học có thể dẫn đến lợi ích trong khả năng hiểu biết, như trong lĩnh vực dịch máy (ví dụ, phân tích chất lượng của Bahdanau et al. (2015))
+		
+		\item Mechanism attention được áp dụng theo cách chung cho tất cả các cạnh trong đồ thị và do đó không phụ thuộc vào truy cập trước tiên đến cấu trúc đồ thị toàn cầu hoặc (các đặc trưng của) tất cả nút (một hạn chế của nhiều kỹ thuật trước đó). Điều này có nhiều hậu quả mong muốn:
+			\begin{itemize}
+				\item[-] Không yêu cầu đồ thị phải là không hướng (chúng ta có thể để trống tính toán $ij$ nếu cạnh 
+				\(j \longrightarrow i\)
+				không tồn tại).
+				
+				\item[-] Cách tiếp cận của chúng ta cho phép áp dụng trực tiếp cho huấn luyện tại chỗ - bao gồm các nhiệm vụ nơi mô hình được đánh giá trên các đồ thị hoàn toàn chưa từng nhìn thấy trong quá trình huấn luyện.
+			\end{itemize}
+		
+		\item Kỹ thuật chú ý được áp dụng theo cách chung đến tất cả các cạnh trong đồ thị và do đó, nó không phụ thuộc vào truy cập trước tới cấu trúc đồ thị toàn cầu hoặc tính năng của tất cả nút (giới hạn của nhiều kỹ thuật trước đó). Điều này có nhiều kết quả mong muốn: cách tiếp cận mới của Hamilton et al. (2017) lấy mẫu một vùng lưới cố định của mỗi nút để giữ cho chân dung tính toán giống nhau, điều này không cho phép truy cập tới toàn bộ vùng lưới trong quá trình suy diễn. Ngoài ra, kỹ thuật này đạt được một số kết quả mạnh mẽ nhất khi sử dụng tập trung vùng lưới dựa trên LSTM (Hochreiter \& Schmidhuber, 1997). Điều này giả định tồn tại một thứ tự nút liên tục qua các vùng lưới và tác giả đã sửa chữa nó bằng cách truyền vào các dãy ngẫu nhiên được sắp xếp cho LSTM. Cách thức của chúng tôi không gặp phải bất kỳ vấn đề nào của những vấn đề đó - nó hoạt động với toàn bộ khu vực lân cận (với chi phí tính toán biến đổi, vẫn cùng mức với các phương pháp như GCN), và không giả định bất kỳ sắp xếp nào trong nó.
+		
+		\item GAT có thể được tái cấu trúc thành một trường hợp cụ thể của MoNet (Monti et al., 2016). Cụ thể hơn thiết lập hàm tọa độ giả là $u(x,y) = f(x)\|f(y)$, trong đó $f(x)$ là đặc trưng (có thể được chuyển đổi bằng MLP) của nút x và $\|$ là sự nối tiếp; và hàm trọng lượng là 
+		\(\omega_j(u) = softmax(MLP(u))\) 
+		(với softmax được thực hiện trên toàn bộ lân cận của một nút), sẽ kiến toán tử patch của MoNet tương tự với chúng tôi. Tuy nhiên, cần lưu ý rằng, so với các phiên bản MoNet đã được xem xét trước đây, mô hình của chúng tôi sử dụng các tính năng nút để tính toán độ tương tự, thay vì các thuộc tính cấu trúc của nút (giả sử biết trước cấu trúc biểu đồ).
+		
+	\end{itemize}
 
-(i) We build a data set for training and testing the sentiment classification model. Implementation steps include surveying, collecting, normalizing, annotating, calibrating, and analyzing data.
+Chúng tôi đã có thể tạo ra một phiên bản của lớp GAT sử dụng các hoạt dộng ma trận rỗng, giảm độ phức tạp lưu trữ thành tuyến tính trong số lượng nút và cạnh và cho phép thực thiện các mô hình GAT trên các tập dữ liệu đồ thị lớn hơn. Tuy nhiên, khung quản lý xử lý tensor mà chúng tôi sử dụng chỉ hỗ trợ nhân ma trận rỗng cho tensor rank-2, điều này hạn chế khả năng nhóm của lớp như hiện tại đã triển khai (đặc biệt là cho các tập dữ liệu có nhiều đồ thị). Định hướng giải quyết hạn chế này là quan trọng đối với công việc trong tương lai. Tùy thuộc vào tính chính xác của cấp trúc đồ thị, GPU có thể không cung cấp lợi ích hiệu suất lớn so với CPU trong những trường hợp rỗng. Nên chú ý rằng kích thước của “Khung nhìn” của mô hình của chúng tôi được giới hạn bởi độ sâu của mạng (tương tự cho GCN và các mô hình tương tự). Kỹ thuật như kết nối bỏ qua (He et al., 2016) có thể được áp dụng dễ dàng để mở rộng độ sâu, tuy nhiên. Cuối cùng việc lập trình song song cho tất cả các cạnh đồ thị, đặc biệt là theo cách phân tán, có thể gặp nhiều tính toán trùng lặp, vì khu vực lân cận thường rất tương đồng trong các đồ thị quan tâm.
 
-(ii) We propose a multi-label classification model for the second sub-task of ABSA. Word window is used to extract information of specific aspects and various data representation methods to extract features for classifiers. Afterwards, we apply classic models concurrently with Deep Learning adaptation to find out best approach for our situation.
 
-The remainders of the paper is organized as follows. Chapter~\ref{chap:dataset-construction} describes the process of dataset construction: collection, annotation and analysis. The research directions of the ABSA problem relevant to dedicated domain (Technology and Mother \& Baby in detail) is represented in chapter~\ref{chap:model}. Chapter~\ref{chap:experiments} describes the experiments that we illustrates the statistics of all methods considered in each of our model's components and finally, chapter~\ref{chap:conclusion} concludes the topic with our future works.
+
+
+
+
+
+
+
+
+
+
