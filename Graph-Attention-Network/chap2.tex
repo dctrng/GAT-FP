@@ -11,7 +11,7 @@ Trong phần này, chúng tôi sẽ trình bày các kiến thức nền tảng 
 % -------------------------------------------------------------------
 
 \section{Đồ Thị Phân Lớp Tập Trung (Graph Attentional Layer)}
-Chúng ta bắt đầu bằng viết một phân lớp đồ thị tập trung đơn lẻ, đây là lớp duy nhất được sử dụng trong toàn bộ các mô hình GAT trong các thử nghiệm của chúng tôi. Thiết kế chú ý cụ thể được chúng tôi sử dụng gần gũi với công trình của Bahdanau et al. (2015) - nhưng khung làm việc là agnostic với lựa chọn cụ thể của mức độ chú ý.
+Chúng ta bắt đầu bằng một phân lớp đồ thị tập trung đơn lẻ, đây là lớp duy nhất được sử dụng trong toàn bộ các mô hình GAT trong các thử nghiệm của chúng tôi. Thiết kế chú ý cụ thể được chúng tôi sử dụng gần gũi với công trình của Bahdanau et al. (2015) - nhưng khung làm việc là agnostic với lựa chọn cụ thể của mức độ chú ý.
 
 Đầu vào của lớp của chúng tôi là một tập hợp các đặc điểm nút, trong đó N là số lượng nút và F là số lượng đặc điểm trong mỗi nút. Lớp tạo ra một tập hợp các đặc điểm nút mới (có thể khác với số lượng F), như đầu ra của nó.
 
