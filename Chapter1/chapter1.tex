@@ -36,15 +36,17 @@ và áp dụng phi tuyến LeakyReLU (với đầu vào dối mạng âm $ \alph
 
 \[
 \alpha_{ij} = \frac
-{exp(LeakyReLU(\vec{a}^T[\textbf{W}\vec{h_i}}\|\textbf{W}\vec{h_j}]))}
+{exp(LeakyReLU(\vec{a}^T[\textbf{W}\vec{h_i}\|\textbf{W}\vec{h_j}]))}
 {{\displaystyle \sum}_{k \in N_i} exp(LeakyReLU(\vec{a}^T[\textbf{W}\vec{h_i}\|\textbf{W}\vec{h_k}]))}
 \]
 
-"T" đại diện cho phép chuyển vị, và k là thao tác nối tiếp. Sau khi được tính toán, các hệ số quan tâm được chuẩn hóa được sử dụng để tính tổng trọng số của các đặc trưng tương ứng với chúng, để dùng làm đặc trưng đầu ra cuối cùng cho mỗi nút (sau có thể là).
+$.^T$ đại diện cho phép chuyển vị, và $\|$ là thao tác nối tiếp. 
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{Chapter1/Figs/Figure1.png}
+Sau khi được tính toán, các hệ số quan tâm được chuẩn hóa được sử dụng để tính tổng trọng số của các đặc trưng tương ứng với chúng, để dùng làm đặc trưng đầu ra cuối cùng cho mỗi nút (sau có thể là
+
+\begin{figure} [!hp]
+	%\centering
+	\includegraphics[scale = 1]{Chapter1/Figs/Figure1.png}
 	\caption{\textbf{Left}: Cơ chế quan tâm 
 			\(a(\textbf{W}\vec{h}_i\|\textbf{W}\vec{h}_j)\)
 			được sử dụng bởi mô hình của chúng tôi, được tham số hóa bởi một vectơ trọng số 
@@ -52,21 +54,20 @@ và áp dụng phi tuyến LeakyReLU (với đầu vào dối mạng âm $ \alph
 		   áp dụng một hoạt động LeakyReLU. Bên phải: Một minh hoạ của quan tâm đa đầu (với $K = 3$ đầu) bởi nút 1 trên khu vực xung quanh của nó. Các kiểu mũi tên và màu sắc khác nhau đại diện cho các tính toán quan tâm độc lập. Các đặc trưng được tổng hợp từ mỗi đầu được nối tiếp hoặc trung bình để đạt được $\vec{h'_1}$,}
 	\label{fig:figure1}
 \end{figure}
-
 Áp dụng một hàm phi tuyến, $\sigma$):
 
 \[\vec{h'_i} = \sigma ({\displaystyle \sum_{j \in N_i}} \alpha_{ij}\textbf{W}\vec{h}_i)\]
 
 Để stabilizr quá trình học tự quan tâm, chúng tôi đã tìm thấy mở rộng cơ chế của chúng tôi để sử dụng quan tâm đa đầu có lợi, tương tự như Vaswani et al. (2017). Cụ thể, K cơ chế quan tâm độc lập thực hiện biến đổi của Phương trình 4, và sau đó các đặc trưng của chúng được nối tiếp, dẫn đến biểu diễn đặc trưng đầu ra sau:
 
-\begin{figure}[h]
+\begin{figure} [!ht]
 	\centering
 	\includegraphics[scale = 0.7]{Chapter1/Figs/ct5.png}
 	%\caption{Data Annotation process}
 	\label{fig:ct1}
 \end{figure}
 
-Trong đó, $\|$ đại diện cho việc nối tiếp, αij k là các hệ số quan tâm đã chuẩn hóa được tính bởi cơ chế quan tâm \textit{k}-th ($a^k$), và $\textbf{W}^k$ là ma trận trọng số biến đổi tuyến tính đầu vào tương ứng. Lưu ý rằng, trong tình huống này, kết quả trả về cuối cùng, \textbf{h'}, sẽ bao gồm $KF'$ đặc trưng (thay vì $F'$) cho mỗi nút.
+Trong đó, $\|$ đại diện cho việc nối tiếp, $\alpha_{ij}^k$ là các hệ số quan tâm đã chuẩn hóa được tính bởi cơ chế quan tâm \textit{k}-th ($a^k$), và $\textbf{W}^k$ là ma trận trọng số biến đổi tuyến tính đầu vào tương ứng. Lưu ý rằng, trong tình huống này, kết quả trả về cuối cùng, \textbf{h'}, sẽ bao gồm $KF'$ đặc trưng (thay vì $F'$) cho mỗi nút.
 
 Đặc biệt, nếu chúng ta thực hiện quan tâm đa đầu trên lớp cuối cùng (dự đoán) của mạng, việc nối tiếp không còn hợp lý - thay vào đó, chúng tôi sử dụng trung bình, và hoãn áp dụng nonlinearity cuối cùng (thường là một softmax hoặc sigmoid logistic cho các vấn đề phân loại) cho đến khi đó:
 
