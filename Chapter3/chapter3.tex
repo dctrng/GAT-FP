@@ -56,7 +56,24 @@ trong đó $u_{i}^a$, $u_{i}^v$ , $u_{i}^t$  là biểu diễn tính năng thô 
 
 \section*{Feature Propagation}
 
+\paragraph{Feature Propagation Algorithm.}
+We can notice that the update in Equation \ref{eq:dirichlet_iteration} is equivalent to first multiplying the feature vector $\mathbf{x}$ by the original diffusion matrix $\tilde{\mathbf{A}}$, and then resetting the known features to their true value. This gives us Algorithm \ref{alg:fp}, an extremely simple and scalable iterative algorithm to reconstruct the missing features on a graph, which we refer to as {\em Feature Propagation} (FP). While $\mathbf{x}_u$ can be initialized to any value, in practice we initialize $\mathbf{x}_u$ to zero and find 40 iterations to be enough to provide convergence for all datasets we experimented on. At each iteration, the diffusion occurs from the nodes with known features to the nodes with unknown features as well as among the nodes with unknown features. 
+
+\paragraph{Extension to Vector-Valued Features.}
+Algorithm \ref{alg:fp} extends seamlessly to vector-valued features by simply replacing the feature vector $\mathbf{x}$ with a $n \times d$ feature matrix $\mathbf{X}$, where $d$ is the number of features. Multiplying the diffusion matrix $\mathbf{A}$ by the feature matrix $\mathbf{X}$ diffuses each feature channel independently. Interestingly, it would not be trivial to extend Equation \ref{eq:dirichlet_iteration} to vector-valued features without noticing its equivalence with Algorithm \ref{alg:fp}, as each node could have different missing features, leading to different sub-matrices $\tilde{\mathbf{A}}_{uk}$ and $\tilde{\mathbf{A}}_{uu}$ for each feature channel.
+
+\paragraph{Learning.}
+One significant advantage of FP is that it can be easily combined with any graph learning model to generate predictions for the downstream task. Moreover, FP is not aimed at merely reconstructing the node features. Instead, by only reconstructing the lower frequency components of the signal, it is by design very well suited to be combined with GNNs, which are known to mainly leverage these lower frequency components~\citep{pmlr-v97-wu19e}.
+Our approach is generic and can be used for any graph-related task for missing features, such as node classification, link prediction and graph classification. In this paper, we focus on node classification.
+
+\paragraph{Oversmoothing.}
+Figure \ref{fig:spectral_reconstruction} shows that the more features are missing, the smoother the reconstruction produced by FP is. Despite this, FP does not suffer from oversmoothing~\citep{oono2020graph}, a term used when node representations converge to similar values. Oversmoothing is caused by repeated diffusion and occurs widely when stacking more than a few layers of the most popular GNNs such as GCN~\citep{Kipf:2016tc}, GAT~\citep{velickovic2018graph} or SGC~\citep{pmlr-v97-wu19e}. However, the boundary conditions in the Feature Propagation diffusion equation prevent the reconstructed features from becoming overly smooth, even when using an extremely high number of diffusion steps. This has also been studied by CGNN~\citep{10.5555/3524938.3525904} and GRAND++~\citep{thorpe2022grand}, which require soft boundary conditions in the form of a source term to prevent oversmoothing, although not in the context of missing features. 
+
+
+
 \section{Graph Attentional Layer}
+
+Lorem Ipsum
 
 \section{Phân Lớp}
 
