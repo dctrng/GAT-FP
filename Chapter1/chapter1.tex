@@ -2,9 +2,6 @@
 \label{chap:Giới thiệu}
 
 
-% -------------------------------------------------------------------
-% Emotion Recognition in Conversation (ERC)
-% -------------------------------------------------------------------
 
 \section{Nhận Diện Cảm Xúc Trong Hội Thoại (Emotion Recognition in Conversation - ERC)}
 \label{sec:Nhận Diện Cảm Xúc Trong Hội Thoại (Emotion Recognition in Conversation - ERC)}
@@ -18,21 +15,36 @@ ERC có rất nhiều tiềm năng khai thác dữ liệu từ các mạng xã h
 ERC cũng là một thành phần quan trọng để xây dựng các tương tác máy tính tự nhiên như con người và có thể trả lời một cuộc đối thoại có tính cảm xúc.
 
 
-% ----------------------------------------------------------
-% Multimodal ERC:
-% -------------------------------------------------------------------
-
 \section{Multimodal ERC}
 \label{sec:Multimodal ERC}
 
-Nhận thấy các nghiên cứu về ERC tập trung vào loại dữ liệu văn bản, *trích bài báo MMGCN* đã đề xuất kết hợp nhiều kiểu dữ liệu và ERC, từ đó công bố MMGCN. 
+Nhận thấy các nghiên cứu về ERC tập trung vào loại dữ liệu văn bản, *trích bài báo MMGCN* đã đề xuất kết hợp nhiều kiểu dữ liệu khác trong hội thoại (ảnh và tiếng) và ERC, từ đó công bố MMGCN. 
 
 \section{Graph-based Multimodal ERC}
 \label{chap:Graph-based Multimodal ERC}
 
+Theo đó, mô hình đồ thị tập trung (Graph Attention Network - GAT) được áp dụng để liên kết các nút trong đồ thị hiệu quả hơn các mô hình trước đây, bằng việc gán trọng số tập trung khác nhau cho từng nút. 
+
+\section{Feature Propagation}
+\label{sec:Feature Propagation}
+
+Tuy nhiên, trong nhiều dự án thực tế, các dữ liệu thành phần không phải lúc nào cũng đầy đủ. 
+Ví dụ, một câu thoại có thể khuyết thông tin do lỗi dịch thuật hay lỗi của phần mềm chuyển âm thanh thành giọng nói; hay bản ghi âm bị nhiễu do môi trường hay do thiết bị ghi âm.
+Đây là một chướng ngại lớn trong việc nhận diện cảm xúc trong hội thoại. 
 
 
+*trích báo FP* đã đề xuất một phương pháp xử lí dữ liệu bị khuyết, gọi là Lan Truyền Đặc Trưng, sử dụng tối ưu hoá Dirichlet. 
+Phương pháp này được hai nhóm tác giả khác kế thừa và phát triển: 
+
+\subsection{Graph Completion Network - GCNET}
+GCNET gồm hai mô-đun đồ thị mạng nơ-ron Speaker và Temporal để tách hai loại dữ liệu tương ứng. 
 
 
+\subsection{Missing Modality Imagination Network - MMIN}
+MMIN sử dụng học máy để dự đoán các phần dữ liệu bị khuyết từ dữ liệu có sẵn, trong các điều kiện khác nhau.
 
+\section{Đóng góp}
+\label{sec:Đóng góp}
 
+Chúng tôi kết hợp phương pháp lan truyền đặc trưng vào mạng chú ý đồ thị, để xử lí các trường hợp khuyết dữ liệu trong học máy. 
+Mô hình này gồm...
