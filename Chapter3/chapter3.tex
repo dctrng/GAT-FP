@@ -7,9 +7,48 @@ Trong chương này, chúng tôi sẽ trình bày phương thức chuẩn bị d
 
 Chúng ta xác định một cuộc trò chuyện $C=\{ \left(u_{i}, y_{i}\right)\}_{i=1}^{L}$, trong đó $L$ là số lượng các câu nói trong cuộc trò chuyện, $u_{i}$ là câu nói thứ $i^{th}$ trong $C$ và $y_{i}$ là nhãn đúng của $u_{i}$. 
 Ở đây, $y_{i} \in \left\{1,2,\cdots, c\right\}$ và $c$ là tổng số nhãn. 
-Mỗi câu nói $u_{i}$ của người nói $p_{s(u_i)}$, trong đó hàm $s(\cdot)$ ánh xạ chỉ số của câu nói vào người nói tương ứng. For each utterance $u_{i}$, we extract multimodal features $x_{i}=\{{x}_{i}^m\}_{m\in\{a, l, v\}}$. 
-Ở đây, $x_{i}^a \in \mathbb{R}^{d_a}$, $x_{i}^l \in \mathbb{R}^{d_l}$ and $x_{i}^v \in \mathbb{R}^{d_v}$ are the utterance-level features of acoustic, lexical and visual modalities, respectively. 
-And $\{d_{m}\}_{m\in\{a, l, v\}}$ is the feature dimension of each modality.
+Mỗi câu nói $u_{i}$ của người nói $p_{s(u_i)}$, trong đó hàm $s(\cdot)$ ánh xạ chỉ số của câu nói vào người nói tương ứng. 
+
+Cho mỗi câu nói $u_{i}$, chúng ta trích xuất đặc trưng đa mô hình $x_{i}=\{{x}_{i}^m\}_{m\in\{a, l, v\}}$. 
+Ở đây, $x_{i}^a \in \mathbb{R}^{d_a}$, $x_{i}^l \in \mathbb{R}^{d_l}$ and $x_{i}^v \in \mathbb{R}^{d_v}$ là các đặc trưng mức câu nói của các mô hình âm thanh, từ vựng và hình ảnh tương ứng.
+Và $\{d_{m}\}_{m\in\{a, l, v\}}$ là chiều của đặc trưng của mỗi mô hình.
+
+Để tạo ra các trường hợp mất mô hình giống như trong thế giới thực, chúng ta sẽ loại bỏ ngẫu nhiên một số mô hình, nhưng đảm bảo ít nhất có một mô hình cho mỗi mẫu, theo các công trình trước đó.
+
+% \cite{chen2020hgmf, zhang2022deep}. - có cite
+
+Do đó, một tập dữ liệu $M$ không hoàn thiện có $\left(2^{M}-1\right)$ mẫu thiếu sót khác nhau. 
+Hình \ref{Figure2} minh họa một tập dữ liệu trimodal ($M=3$) với bảy mẫu thiếu sót. 
+Giả sử $\sigma_{i}$ là mẫu thiếu sót của $u_{i}$ và $\phi(\cdot)$ là một hàm mô tả mỗi mẫu thiếu sót với các chế độ có sẵn. 
+Biểu diễn không hoàn thiện của $u_{i}$ được đánh dấu là $\widetilde{x}_{i}=\{{\lambda}_{i}^m{x}_{i}^m\}_{m\in\{a, l, v\}}$, trong đó ${\lambda}_{i}^m$ được định nghĩa như sau:
+
+\begin{equation}
+	\label{eq1}
+	{\lambda}_{i}^m=\begin{cases}
+	1, m\in\phi(\sigma_{i}) \\
+	0, m\notin\phi(\sigma_{i}) \\
+	\end{cases}
+\end{equation}
+
+
+
+
+\section{Mã Hoá Thông Tin Ngữ Cảnh} 
+
+Như đã đề cập ở trên, thông tin ngữ cảnh hội thoại là quan trọng để dự đoán nhãn cảm xúc của mỗi lời nói. Vì vậy, việc mã hóa thông tin ngữ cảnh vào biểu diễn tính năng của lời nói là có lợi. Chúng ta tạo ra mã hóa tính năng của lời nói được nhận thông tin ngữ cảnh cho mỗi modality qua mã hóa modality tương ứng. Cụ thể, chúng ta sử dụng mạng LSTM kết hợp hai chiều để mã hóa thông tin ngữ cảnh liên tục cho modality văn bản. Đối với modality âm thanh và hình ảnh, chúng ta sử dụng mạng kết nối đầy đủ. Mã hóa tính năng của lời nói được nhận thông tin ngữ cảnh có thể biểu diễn như sau:
+
+\begin{small}
+\begin{equation}
+\begin{aligned}
+    \centering
+    &h_{i}^t = [\overrightarrow{\mathrm{LSTM}}(u_{i}^t,h_{i-1}^t),\overleftarrow{\mathrm{LSTM}}(u_{i}^t,h_{i+1}^t)] \\
+    &h_{i}^a = W_{e}^a u_{i}^a+b_{i}^a \\
+    &h_{i}^v = W_{e}^v u_{i}^v+b_{i}^v
+\end{aligned}
+\end{equation}
+\end{small}
+trong đó $u_{i}^a$, $u_{i}^v$ , $u_{i}^t$  là biểu diễn tính năng thô cảnh của câu thoại $i$ từ modality âm thanh, hình ảnh và văn bản, tương ứng. Mã hóa modality xuất ra mã hóa tính năng thô cảnh cho các modality $h_{i}^a$, $h_{i}^v$, and $h_{i}^t$ tương ứng.
+
 
 
 
