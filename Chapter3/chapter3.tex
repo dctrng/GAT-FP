@@ -52,3 +52,51 @@ trong đó $u_{i}^a$, $u_{i}^v$ , $u_{i}^t$  là biểu diễn tính năng thô 
 
 
 
+\section*{Missing Mask}
+
+\section*{Feature Propagation}
+
+\section{Graph Attentional Layer}
+
+\section{Phân Lớp}
+
+Dựa theo phần ***,  chúng tôi khởi tạo các nút bằng kết hợp của đặc trưng của câu nói và đặc trưng người nói, được biểu diễn là $h^{'}_{i}$.
+
+% TODO: Reference về phần tạo Graph: sec.~\ref{sec:graph}
+
+\begin{small}
+\begin{equation}
+    \centering
+    h^{'}_{i} = [h^{'a}_{i}, h^{'v}_{i}, h^{'t}_{i}].
+\end{equation}
+\end{small}
+Gọi $g_{i}^a$, $g_{i}^v$ và $g_{i}^t$ là các đặc trưng của các mô hình khác nhau được mã hóa bởi GCN. Các đặc trưng tương ứng với cùng một câu thoại được nối lại: 
+
+\begin{small}
+\begin{equation}
+    \centering
+    g_{i} = [g_{i}^a, g_{i}^v, g_{i}^t].
+\end{equation}
+\end{small}
+Chúng ta sau đó có thể nối lại $g_{i}$ và $h_{i}$ để tạo ra biểu diễn đặc trưng cuối cùng cho mỗi câu nói: 
+
+\begin{small}
+\begin{align}
+    \centering
+    &e_{i} = [h^{'}_{i}, g_{i}] ,
+\end{align}
+\end{small}
+
+Sau đó, $e_{i}$  được cho vào một MLP với các lớp đầy đủ được kết nối để dự đoán nhãn cảm xúc $\hat{y_{i}}$ cho câu thoại:
+
+\begin{small}
+\begin{equation}
+\begin{aligned}
+    &l_{i} = RELU(W_{l}e_{i}+b_{l})\\
+    &P_{i} = Softmax(W_{smax}l_{i}+b_{smax})\\
+    &\hat{y_{i}} = \mathop{\arg\min}_{k} (P_{i}[k])
+\end{aligned}
+\end{equation}
+\end{small}
+
+
