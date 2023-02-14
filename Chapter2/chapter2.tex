@@ -9,99 +9,54 @@
 \section{Mạng Đồ Thị Hoàn Thiện (GC-NET)}
 \label{sec:Mạng Đồ Thị Hoàn Thiện}
 
-To serve our dedicated approach, we have to handle textual data that are reviews on E-commerce platforms. We choose Scrapy\footnote{\url{https://scrapy.org/}} to crawl the data from online shopping websites including \url{http://www.tiki.vn} and \url{http://www.shopee.vn}. They are two of Vietnam's most common and trusted e-commerce platforms.
-We focus on technology and mother \& baby domains since they are the most interested domain in Vietnamese e-commerce.
-These raw data are then used as input for Data Annotation step that we will describe in Section~\ref{sec:data-annotation}.
+trích báo GCNET
+GCNET là một mô hình Deep Learning sử dụng trong computer vision, được sử dụng để giải quyết các bài toán liên quan đến nhận dạng đối tượng, phân loại hình ảnh,... 
+GCNET cung cấp một cách tiên tiến để tăng cường tính chính xác của mô hình trong việc phân tích hình ảnh và giải quyết vấn đề về sự phức tạp của hình ảnh.
+
+Ý tưởng chính của GCNet là sử dụng thông tin ngữ cảnh toàn cục để cải thiện biểu diễn đặc trưng của mỗi instance trong một hình ảnh, dẫn đến hiệu suất tốt hơn trên các tác vụ instance segmentation.
+GCNET dựa trên các ý tưởng chính sau:
+
+Attention mechanism: mô hình sử dụng một cơ chế chú ý để tập chung vào các vùng cụ thể trong hình ảnh, tăng tính chính xác của mô hình tỏng việc phân tích ảnh.
+Grid Attention: cấu trúc lưới chú ý của GCNET cho phép mô hình tập trung vào các ô trong ảnh, giúp tăng tính chính xác của mô hình trong việc phân tích hình ảnh.
+Context Aggregation: Mô hình sử dụng các thuật toán tập trung ngữ cảnh để tổng hợp các thông tin từ các vùng trong hình ảnh, giúp tăng tính chính xác của mô hình trong việc phân tích hình ảnh.
+Multi-Scale Processing: GCNet sử dụng các tầng cục bộ với kích thước khác nhau để xử lý hình ảnh với các tỉ lệ khác nhau, giúp tăng tính chính xác của mô hình trong việc phân tích hình ảnh.
+
+
+Điểm mạnh:
+Tính chính xác cao: Mô hình GCNET được chứng minh là có tính chính xác cao. Nhất là trong việc phân tích hình ảnh
+Độ phức tạp thấp: vì GCNET sử dụng cấu trúc Grid Attention nên giảm độ phức tạp của mô hình và tăng tính chính xác của mô hình.
+Khả năng xử lý đa tỉ lệ: GCNET có khả năng xử lý hình ảnh với các tỷ lệ khác nhau, tăng tính chính xác của mô hình
+Khả năng tổng hợp ngữ cảnh: GCNET sử dụng các thuật toán tập trung nữ cảnh để tổng hợp các thông tin từ các vùng trong hình ảnh, giúp tăng tính chính xác của mô hình trong việc phân tích hình ảnh.
+
+Điểm yếu:
+Tốc độ huấn luyện chậm: Mô hình GCNet có kích thước lớn và sử dụng nhiều tính toán, điều này có thể làm cho quá trình huấn luyện chậm hơn so với các mô hình khác.
+Yêu cầu tài nguyên máy tính cao: Vì kích thước lớn của mô hình, nó cần một số tài nguyên máy tính mạnh để hoạt động tốt.
+Khó để giải quyết các bài toán phức tạp: Mô hình GCNet có thể gặp khó khăn trong việc giải quyết các bài toán phức tạp, như việc phân tích hình ảnh có nhiều đối tượng phức tạp.
 
 % -------------------------------------------------------------------
-% Data Annotation
+% MMIN
 % -------------------------------------------------------------------
-\section{Data Annotation}
-\label{sec:data-annotation}
-\begin{table}[]
-\centering
-\resizebox{\linewidth}{!}{
-\begin{tabular}{|c|c|>{\raggedright\arraybackslash}m{11 cm}|}
-\hline
-\textit{\textbf{Domain}}                         & \textit{\textbf{Aspect}} & \multicolumn{1}{c|}{\textit{\textbf{Description}}}                                                                                                                                                                \\ \hline
-\multirow{8}{*}{\textbf{Technology}} & Price                    & Cut/ reduce/ slash/ low price considered positive while increase/ put up/ raise/ high price is considered negative.                                            \\ \cline{2-3} 
-                               & Service                  & Nice, fast, efficient, enthusiastic support is considered positive while no reply, irresponsibility or carelessly packing is considered negative.                                                                 \\ \cline{2-3} 
-                               & Delivery                & The quality, speed and cost of shipping process. If it is fast, carefully shipped and the cost is low, it is considered positive, otherwise is negative.                                                          \\ \cline{2-3} 
-                               & Performance              & Fast processing speed is considered positive while lag or latency in the middle of an app or apps shut down unexpectedly is considered negative.                      \\ \cline{2-3} 
-                               & Hardware                 & The quality of the hardware of the device including display, chip, battery, cameras, storage, RAM, etc.                                                                                                           \\ \cline{2-3} 
-                               & Authenticity             & Genuinely produced product is considered positive while fake, imitation is consider negative.                                                                                                                      \\ \cline{2-3} 
-                               & Accessories              & Fully provided, good quality accessories are considered positive; low quality or missed are considered negative.                                                            \\ \cline{2-3} 
-                               & Appearance               & Product with nice design, nice color, luxury, etc. are considered positive, product with scratches, awful design is consider negative.                                                                             \\ \hline
-\multirow{6}{*}{\textbf{Mother \& Baby}}     & Price                    & Cut/ reduce/ slash/ low price considered positive while increase/ put up/ raise/ high price is considered negative.                                            \\ \cline{2-3} 
-                               & Service                  & Nice, fast, efficient, enthusiastic support  is considered positive while no reply, irresponsibility or carelessly packing is considered negative.                                                                 \\ \cline{2-3} 
-                               & Delivery               & The quality, speed and cost of shipping process. If it is fast, carefully shipped and the cost is low, it is considered positive, otherwise negative.                                                             \\ \cline{2-3} 
-                               & Safety                   & Product having obvious expiration date and has not expired, safe to use is considered positive, while product that is expired or causes allergy, rashes is considered negative. \\ \cline{2-3} 
-                               & Quality                  & Customer experience on the product: the softness, absorbency of diapers, the taste and smell of milk, etc.                                                                                                        \\ \cline{2-3} 
-                               & Authenticity             & Genuinely produced product is considered positive while fake, imitation is consider negative.                                                                                                                      \\ \hline
-\end{tabular}
-}
-\caption{Aspect description}
-\end{table}
+\section{Missing Modality Imagination Network}
+\label{sec:Missing Modality Imagination Network}
 
-We used Docanno as a tool for data annotation. First of all, we overview the data set collected from crawling process to figure out aspects that were frequently mentioned on users’ reviews. 
+% TODO: đổi "hình ảnh" => "dữ liệu"
 
-After discussion, we extracted aspect terms in the sentences and labeled the sentiment polarities with respect to the aspect terms using Docanno. Table 1 illustrates how we handle each aspect. For Technology domain, we predefined eight coarse aspect categories: price, service, delivery, performance, hardware, authenticity, accessories, design. For Mother \& Baby, these are: price, service, delivery, safety, quality and authenticity. In each aspect, it is considered negative when there is at least a complaint regarding that aspect, otherwise it is considered negative.
+MMIN được dùng để giải quyết vấn đề hình ảnh thiếu 1 hoặc nhiều đặc tính.
+Ý tưởng của MMIN được tạo trên nhiều ý tưởng từ Deep Learning như:
+Kiến trúc mạng neural: MMIN sử dụng kiến trúc mạng neural để học và tạo ra các đặc tính hoặc hình ảnh mới.
+Generative Adversarial Network (GAN): MMIN sử dụng công nghệ GAN để học cách tạo ra các hình ảnh hoặc đặc tính mới.
+Auto-Encoder: MMIN sử dụng công nghệ Auto-Encoder để học cách biến đổi dữ liệu từ một biểu diễn sang một biểu diễn khác.
+Siêu việt hoá: MMIN sử dụng công nghệ siêu việt hoá để học cách tạo ra các hình ảnh hoặc đặc tính mới.
+Xử lý hình ảnh: MMIN sử dụng các kỹ thuật xử lý hình ảnh, như biến đổi và normalization để đảm bảo rằng dữ liệu đầu vào cho mô hình là tương đồng và có thể so sánh được.
 
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{Chapter2/Figs/annotation.pdf}
-	\caption{Data Annotation process}
-	\label{fig:annotation}
-\end{figure}
-
-Data then separated in subsets, each of them was then evaluated and labeled by 2 annotators independently. Next, we measured the agreement between two annotators, if the result is too low (Inter-Annotator Agreement or IAA \(<\) 0.8), manually reviewing – process will be applied. The labeled data then stored as input for Pre-processing step. 
-
-% -------------------------------------------------------------------
-% Dataset Analysis
-% -------------------------------------------------------------------
-\section{Dataset Analysis}
-\label{sec:data-analysis}
-\paragraph{}
-The statistics of Vietnamese E-commerce dataset (VECD) including Shopee and Tiki in two different domains:  Technology and Mother \& Baby are reported in figure 1 to 4. VECD consists of 3016 instances of Shopee Mother \& Baby, 2986 instances of Tiki , 3002 instances of Shopee Technology and 3236 instances of Tiki Technology, making up 12240 instances in total.
-
-\begin{table}[h]
-\centering
-\begin{tabular}{|l|c|c|c|c|}
-\hline
-\multirow{2}{*}{}                                        & \multicolumn{2}{c|}{\textbf{Mother \& Baby}}           & \multicolumn{2}{c|}{\textbf{Technology}}                \\ \cline{2-5} 
-                                                         & \textit{\textbf{Shopee}} & \textit{\textbf{Tiki}} & \textit{\textbf{Shopee}} & \textit{\textbf{Tiki}} \\ \hline
-\multicolumn{1}{|c|}{\textbf{Total aspect}}              & 6                        & 6                      & 8                        & 8                      \\ \hline
-\multicolumn{1}{|c|}{\textbf{Aspect count per sentence}} & 1.753234                 & 1.497347               & 2.087627                 & 1.746551               \\ \hline
-\end{tabular}
-\caption{The average number of aspects mentioned}
-\end{table}
-
-\begin{figure}[h]
-	\centering
-	\includegraphics[width=\linewidth]{Chapter2/Figs/baby care.pdf}
-	\caption{Mother \& Baby data statistics}
-	\label{fig:baby}
-\end{figure}
-
-In Mother \& Baby domain, Shipping and Quality appear to be the most concerned aspects. Shopee has $1541$/$3216$ comments on Shipping and $773$/$3216$ comments on Quality, while in Tiki they are $972$/$2986$ and $1177$/$2986$ respectively. Authenticity only occasionally mentioned in Tiki's comments, just in $131$ cases while the others are mentioned in over $200$ comments, in both platforms, including Authenticity mentioned in Shopee.
-
-Similarly, in Technology domain, Appearance is frequently mentioned in Shopee while it is Shipping in Tiki. More specifically $1064$ out of $3002$ comments on Shopee have information relating to products’ appearance, compared to $1021$ out of $3236$ comments on Tiki having information about Shipping. Price and Authenticity are the most imbalanced aspects, with only $4$ negative comments on Price and $12$ negative comments on Authenticity in Shopee while in Tiki the figures are $31$ and $24$, respectively. In Tiki, although the number of comments on Service, Hardware, Performance and Accessories is comparatively low, the data on these aspects are relatively balanced, with the difference below $16\%$.
-
-\begin{figure}[]
-	\centering
-	\includegraphics[width=\linewidth]{Chapter2/Figs/tech data.pdf}
-	\caption{Technology data statistics}
-	\label{fig:tech}
-\end{figure}
-
-
-
-
-
-
-
-
-
-
-
+Điểm mạnh:
+Độ chính xác cao: MMIN được huấn luyện trên lượng dữ liệu lớn và có khả năng tìm kiếm các mô hình dữ liệu phù hợp cho mỗi tác vụ, giúp tăng độ chính xác của các kết quả.
+Tự động hóa: MMIN tự động tìm kiếm và chọn các mô hình dữ liệu phù hợp cho từng tác vụ, giảm thiểu công sức cần thiết để thực hiện các tác vụ liên quan đến dữ liệu.
+Khả năng mở rộng: MMIN có thể được mở rộng để hỗ trợ cho các tác vụ và mô hình dữ liệu mới, giúp cho hệ thống của bạn có thể dễ dàng mở rộng theo từng nhu cầu của doanh nghiệp.
+Tối ưu hóa tốc độ: MMIN sử dụng các kỹ thuật tối ưu hóa tốc độ để giảm thiểu tải trên hệ thống, giúp cho các tác vụ xử lý dữ liệu được thực hiện mượt mà và nhanh chóng.
+Điểm yếu:
+Khả năng học tập khó: MMIN cần được huấn luyện trên lượng dữ liệu lớn và tốt, vì vậy việc huấn luyện của MMIN có thể tốn nhiều thời gian và tài nguyên.
+Tùy thuộc vào dữ liệu: MMIN sử dụng dữ liệu để tìm kiếm và chọn các mô hình dữ liệu phù hợp, nên nếu dữ liệu không đầy đủ hoặc không chính xác, các kết quả của MMIN cũng sẽ không chính xác.
+Đòi hỏi kỹ thuật cao: MMIN sử dụng các kỹ thuật máy học cao cấp, vì vậy yêu cầu kỹ thuật của nhà phát triển cũng cao.
+Giá thành: Việc huấn luyện và sử dụng MMIN cần mức chi phí cao, vì vậy có thể không phù hợp cho một số doanh nghiệp với ngân sách hạn chế.
 
